@@ -1,6 +1,6 @@
+import { createApp } from "https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.29/vue.esm-browser.min.js";
 // 產品資料格式
-
-const products = [
+products: [
   {
     category: "甜甜圈",
     content: "尺寸：14x14cm",
@@ -57,23 +57,52 @@ const products = [
     ],
   },
 ];
+const site = "https://vue3-course-api.hexschool.io/v2";
+const api_path = "yuling202202";
 
-const App = {
+const app = createApp({
   data() {
     return {
       products: [],
-      temp: {},
+      tempProduct: {},
     };
   },
   methods: {
-    productItem(item1) {
-      // console.log('productItem', item1);
-      this.temp = { ...item1 };
+    // 進入頁面時驗證一次
+    checkLogin() {
+      //console.log(`${site}/api/user/check`);
+      const url = `${site}/api/user/check`;
+      axios
+        .post(url)
+        .then((res) => {
+          //console.log(res);
+          // 取得產品列表
+          this.getProducts();
+        })
+        .catch((err) => {
+          console.log(err);
+          window.location = "login.html";
+        });
+    },
+    getProducts() {
+      const url = `${site}/api/${api_path}/admin/products/all`;
+      axios.get(url).then((res) => {
+        console.log(res);
+        this.products = res.data.products;
+      });
     },
   },
-  created() {
-    // this的products為自己命名，products為外部進來資料
-    this.products = products;
+  mounted() {
+    // https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
+    const cookieValue = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("hexToken="))
+      ?.split("=")[1];
+    console.log(cookieValue);
+    // axios headers
+    // axios請求預設headers Authorization帶入token
+    axios.defaults.headers.common["Authorization"] = cookieValue;
+    this.checkLogin();
   },
-};
-Vue.createApp(App).mount("#app");
+});
+app.mount("#app");
