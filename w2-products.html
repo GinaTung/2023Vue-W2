@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>產品列表-W2</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <style>
@@ -68,11 +68,17 @@
                                 </td>
                             </tr>
                         </tbody>
+
                     </table>
                     <p>目前有 <span>{{Object.values(products).length}}</span> 項產品</p>
                 </div>
                 <div class="col-md-6">
-                    <h2>單一產品細節</h2>
+                    <div class="d-flex justify-content-between">
+                        <h2>單一產品細節</h2>
+                        <button type="button" class="btn w-10 btn-info " v-on:click="tempProduct=item">
+                            <a href="index.html" class="text-light " style="text-decoration:none;">回首頁</a>
+                        </button>
+                    </div>
                     <!-- {{tempProduct}} -->
                     <template v-if="tempProduct.id">
                         <div class="card mb-3">
